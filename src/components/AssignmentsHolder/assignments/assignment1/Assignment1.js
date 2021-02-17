@@ -33,6 +33,8 @@ class Assignment1 extends Component {
                     <li>Add styling of your choice to your components/ elements in the components - both with inline styles and stylesheets</li>
                 </ol>
 
+                <h4>Solution</h4>
+
                 <UserInput changedHandler={this.userNameChangeHandler}
                            currentName={this.state.username} />
 

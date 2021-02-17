@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import Person from './components/Person/Person'
+import AssignmentsHolder from "./components/AssignmentsHolder/AssignmentsHolder";
 
 
 class App extends Component {
@@ -10,7 +11,8 @@ class App extends Component {
             { id: '2', name: 'Peter', age: '5' },
             { id: '3', name: 'Danila', age: '2' }
         ],
-        showPersons: false
+        showPersons: false,
+        showAssignments: false
     }
 
     // The Arrow notation encapsulates the class's "THIS" in runtime
@@ -50,6 +52,11 @@ class App extends Component {
     togglePersonsHandler = (event) => {
         const doesShow = this.state.showPersons;
         this.setState({ showPersons: !doesShow })
+    }
+
+    toggleAssignments = () => {
+        const doesShow = this.state.showAssignments;
+        this.setState({ showAssignments: !doesShow })
     }
 
     deletePersonHandler = (personIndex) => {
@@ -96,6 +103,13 @@ class App extends Component {
             );
         }
 
+        let assignments = null;
+        if (this.state.showAssignments) {
+            assignments = (
+                <AssignmentsHolder/>
+            );
+        }
+
 
         return (
             <div className="App">
@@ -110,7 +124,13 @@ class App extends Component {
                 <button style={buttonStyle}
                         onClick={this.togglePersonsHandler}>Toggle Persons</button>
 
+                <button style={buttonStyle}
+                        onClick={this.toggleAssignments}>Show Assignments</button>
+
                 { persons }
+                <hr/>
+                { assignments }
+
 
             </div>
         );
