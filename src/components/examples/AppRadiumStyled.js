@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import './App.css';
 import Radium, { StyleRoot } from "radium";
-import Person from './components/Person/Person'
-import AssignmentsHolder from "./components/AssignmentsHolder/AssignmentsHolder";
+import Person from '../Person/Person'
+import AssignmentsHolder from "../AssignmentsHolder/AssignmentsHolder";
 
 
 class App extends Component {
