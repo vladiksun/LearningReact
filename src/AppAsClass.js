@@ -1,16 +1,33 @@
-import React, { Component } from 'react';
-import './App.css';
-import Radium from "radium";
+import React, {Component} from 'react';
+import styled from 'styled-components';
+import styles from './App.module.css';
+
 import Person from './components/Person/Person'
 import AssignmentsHolder from "./components/AssignmentsHolder/AssignmentsHolder";
+
+
+const StyledButton = styled.button`
+  background-color: ${props => props.alt ? 'red' : 'green'};
+  color: white;
+  font: inherit;
+  border: 1px solid blue;
+  padding: 8px;
+  cursor: pointer;
+  margin: 5px;
+
+  :hover {
+    background-color: ${props => props.alt ? 'yellow' : 'lightgreen'} ;
+    color: black
+  }
+`;
 
 
 class App extends Component {
     state = {
         persons: [
-            { id: '1', name: 'Vlad', age: '36' },
-            { id: '2', name: 'Peter', age: '5' },
-            { id: '3', name: 'Danila', age: '2' }
+            {id: '1', name: 'Vlad', age: '36'},
+            {id: '2', name: 'Peter', age: '5'},
+            {id: '3', name: 'Danila', age: '2'}
         ],
         showPersons: false,
         showAssignments: false
@@ -19,11 +36,13 @@ class App extends Component {
     // The Arrow notation encapsulates the class's "THIS" in runtime
     switchNameHandler = (newName) => {
         // DON'T DO THIS this.state.persons[0].name = 'Ksenya';
-        this.setState({ persons: [
-                { name: newName, age: '!!!!' },
-                { name: newName, age: '!!!!' },
-                { name: newName, age: '!!!!' }
-            ] })
+        this.setState({
+            persons: [
+                {name: newName, age: '!!!!'},
+                {name: newName, age: '!!!!'},
+                {name: newName, age: '!!!!'}
+            ]
+        })
     }
 
     // The Arrow notation encapsulates the class's "THIS" in runtime
@@ -52,12 +71,12 @@ class App extends Component {
 
     togglePersonsHandler = (event) => {
         const doesShow = this.state.showPersons;
-        this.setState({ showPersons: !doesShow })
+        this.setState({showPersons: !doesShow})
     }
 
     toggleAssignments = () => {
         const doesShow = this.state.showAssignments;
-        this.setState({ showAssignments: !doesShow })
+        this.setState({showAssignments: !doesShow})
     }
 
     deletePersonHandler = (personIndex) => {
@@ -68,56 +87,33 @@ class App extends Component {
         const persons = [...this.state.persons]
 
         persons.splice(personIndex, 1);
-        this.setState({ persons: persons })
+        this.setState({persons: persons})
     }
 
     render() {
-        const buttonStyle = {
-            backgroundColor: 'green',
-            color: 'white',
-            font: 'inherit',
-            border: '1px solid blue',
-            padding: '8px',
-            cursor: 'pointer',
-            margin: '5px',
-            ':hover': {
-                backgroundColor: 'lightgreen',
-                color: 'black'
-            }
-        };
-
         let persons = null;
+        let buttonClasses = [styles.ModuleDefault];
 
         if (this.state.showPersons) {
             persons = (
                 <div>
-                    { this.state.persons.map((person, index) => {
+                    {this.state.persons.map((person, index) => {
                         return <Person
-                            key={ person.id }
-                            name={ person.name }
-                            age={ person.age }
-                            click={ () => this.deletePersonHandler(index) }
+                            key={person.id}
+                            name={person.name}
+                            age={person.age}
+                            click={() => this.deletePersonHandler(index)}
                             changed={(event) => this.nameChangedHandler(event, person.id)}/>
                     })}
-
-                    <Person name="I am robot"
-                            age="22222"
-                    >Hardcoded robot</Person>
                 </div>
             );
-
-            buttonStyle.backgroundColor = 'red';
-            buttonStyle[':hover'] = {
-                backgroundColor: 'lightred',
-                color: 'black'
-            }
         }
 
-        let classes = [];
+        let assignedClasses = [];
         if (this.state.showPersons) {
-            classes.push('red', 'bold')
+            assignedClasses.push(styles.red, styles.bold)
         } else {
-            classes = [];
+            assignedClasses = [];
         }
 
         let assignments = null;
@@ -125,34 +121,47 @@ class App extends Component {
             assignments = (
                 <AssignmentsHolder/>
             );
+            buttonClasses.push(styles.Yellow);
         }
 
         return (
-            <div className="App">
-                <h1 className={classes.join(' ')}>Hi, I'm a React App</h1>
+            <div className={styles.App}>
+                <h1 className={assignedClasses.join(' ')}>Hi, I'm a React App</h1>
 
-                <button style={buttonStyle} key="button1"
-                    onClick={ this.switchNameHandler.bind(this, 'TEST_NAME_AS_BIND') }>Switch Name via BIND</button>
+                <StyledButton key="button1"
+                              title="CSS Via styled-components"
+                              onClick={this.switchNameHandler.bind(this, 'TEST_NAME_AS_BIND')}>
+                    Switch Name via BIND
+                </StyledButton>
 
-                <button style={buttonStyle} key="button2"
-                    onClick={(event) => this.switchNameHandler('TEST_NAME_AS_ARROW_FUNCTION')}>Switch Name via Arrow Function</button>
+                <StyledButton key="button2"
+                              title="CSS Via styled-components"
+                              onClick={(event) => this.switchNameHandler('TEST_NAME_AS_ARROW_FUNCTION')}>
+                    Switch Name via Arrow Function
+                </StyledButton>
 
-                <button style={buttonStyle} key="button3"
-                        onClick={this.togglePersonsHandler}>Toggle Persons</button>
+                <StyledButton alt={this.state.showPersons}
+                              key="button3"
+                              title="CSS Via styled-components"
+                              onClick={this.togglePersonsHandler}>
+                    Toggle Persons
+                </StyledButton>
 
-                <button style={buttonStyle} key="button4"
+                <button className={buttonClasses.join(' ')} title="CSS Via CSS module"
+                        key="button4"
                         onClick={this.toggleAssignments}>Show Assignments</button>
 
-                { persons }
+                {persons}
 
 
                 <hr/>
-                { assignments }
+                {assignments}
 
             </div>
+
         );
     }
 }
 
 
-export default Radium(App);
+export default App;
