@@ -1,12 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './AppAsClass';
+import App from './containers/AppAsClass';
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <App appTitle="Person Manager" />
   </React.StrictMode>,
   document.getElementById('root')
 );
