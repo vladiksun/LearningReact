@@ -8,6 +8,12 @@ import AssignmentsHolder from "../components/AssignmentsHolder/AssignmentsHolder
 
 
 class App extends Component {
+
+    constructor(props) {
+        super(props);
+        console.log('[AppAsClass.js] constructor');
+    }
+
     state = {
         persons: [
             {id: '1', name: 'Vlad', age: '36'},
@@ -16,6 +22,24 @@ class App extends Component {
         ],
         showPersons: false,
         showAssignments: false
+    }
+
+    static getDerivedStateFromProps(props, state) {
+        console.log('[AppAsClass.js] getDerivedStateFromProps', props);
+        return state;
+    }
+
+    componentDidMount() {
+        console.log('[AppAsClass.js] componentDidMount');
+    }
+
+    shouldComponentUpdate(nextProps, nextState, nextContext) {
+        console.log('[AppAsClass.js] shouldComponentUpdate');
+        return true;
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        console.log('[AppAsClass.js] componentDidUpdate');
     }
 
     // The Arrow notation encapsulates the class's "THIS" in runtime
@@ -76,6 +100,8 @@ class App extends Component {
     }
 
     render() {
+        console.log('[AppAsClass.js] render')
+
         let persons = null;
         if (this.state.showPersons) {
             persons = <Persons
