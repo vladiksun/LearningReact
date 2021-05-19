@@ -11,7 +11,15 @@ class Person extends Component {
 
     shouldComponentUpdate(nextProps, nextState, nextContext) {
         console.log('[Person.js] shouldComponentUpdate');
-        return true;
+        let newName = nextProps.name;
+        let currentName = this.props.name;
+
+        // performance optimization
+        if (newName.trim()!== currentName.trim()) {
+            console.log('[Person.js] shouldComponentUpdate re-rendered component');
+           return true;
+        }
+        return false;
     }
 
     getSnapshotBeforeUpdate(prevProps, prevState) {
@@ -25,6 +33,11 @@ class Person extends Component {
 
         // will print { message: 'Snapshot!'}
         console.log(snapshot);
+    }
+
+    // used for cleanup, destroying listeners for example
+    componentWillUnmount() {
+        console.log('[Person.js] componentWillUnmount');
     }
 
     render() {

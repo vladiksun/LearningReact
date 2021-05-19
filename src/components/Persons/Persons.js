@@ -3,7 +3,7 @@ import ErrorBoundary from "../ErrorBoundary/ErrorBoundary";
 import Person from "./Person/Person";
 
 
-const persons = (props) => props.persons.map((person, index) => {
+const Persons = (props) => props.persons.map((person, index) => {
     console.log('[Persons.js] rendering')
 
         return <ErrorBoundary key={person.id}>
@@ -15,4 +15,4 @@ const persons = (props) => props.persons.map((person, index) => {
                 </ErrorBoundary>
     });
 
-export default persons;
+export default Persons;

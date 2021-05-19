@@ -122,6 +122,7 @@ class App extends Component {
                 <Cockpit
                     title={this.props.appTitle}
                     showPersons={this.state.showPersons}
+                    persons={this.state.persons}
                     showAssignments={this.state.showAssignments}
                     onSwitchNameHandler={this.switchNameHandler}
                     onTogglePersonsHandler={this.togglePersonsHandler}
