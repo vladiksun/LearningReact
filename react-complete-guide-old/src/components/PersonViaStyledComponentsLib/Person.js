@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, {ThemeProvider} from 'styled-components';
 
 const StyledDiv = styled.div`
   width: 50%;
@@ -10,6 +10,7 @@ const StyledDiv = styled.div`
 
   @media (min-width: 500px) {
     width: 450px;
+  }
 `
 
 const Person = (props) => {
