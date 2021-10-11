@@ -8,6 +8,8 @@ import Checkout from "./Checkout";
 
 const Cart = props => {
     const [isCheckout, setIsCheckout] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [didSubmit, setDidSubmit] = useState(false);
     const cartCtx = useContext(CartContext);
 
     const totalAmount = `$${cartCtx.totalAmount.toFixed(2)}`;
@@ -26,6 +28,21 @@ const Cart = props => {
 
     const orderHandler = () => {
         setIsCheckout(true)
+    };
+
+    const submitOrderHandler = async (userData) => {
+        setIsSubmitting(true)
+        const response = await fetch('https://my-react-project-37b53-default-rtdb.europe-west1.firebasedatabase.app/orders.json', {
+            method: 'POST',
+            body: JSON.stringify({
+                user: userData,
+                orderItems: cartCtx.items
+            })
+        });
+
+        setIsSubmitting(false);
+        setDidSubmit(true);
+        cartCtx.clearCart();
     };
 
     const cartItems =
@@ -47,17 +64,32 @@ const Cart = props => {
             && <button className={classes.button} onClick={orderHandler}>Order</button>}
         </div>
 
-    return (
-        <Modal onHideCart={props.onHideCart}>
+    const cartModalContent =
+        <>
             {cartItems}
             <div className={classes.total}>
                 <span>Total Amount</span>
                 <span>{totalAmount}</span>
             </div>
-
-            {isCheckout && <Checkout onCancel={props.onHideCart}/>}
+            {isCheckout && <Checkout onCancel={props.onHideCart} onConfirm={submitOrderHandler}/>}
             {!isCheckout && modalActions}
+        </>
 
+    const isSubmittingModalContent = <p>Sending order data...</p>
+
+    const didSubmitModalContent =
+        <>
+            <p>Successfully sent the order!</p>
+            <div className={classes.actions}>
+                <button className={classes.button} onClick={props.onHideCart}>Close</button>
+            </div>
+        </>
+
+    return (
+        <Modal onHideCart={props.onHideCart}>
+            {!isSubmitting && !didSubmit && cartModalContent}
+            {isSubmitting && isSubmittingModalContent}
+            {!isSubmitting && didSubmit && didSubmitModalContent}
         </Modal>
     );
 };
