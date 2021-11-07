@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import classes from './AvailableMeals.module.css'
 import Card from "../UI/Card";
 import MealItem from "./MealItem/MealItem";
-import LocalMealsData from "./meals.json";
 
 const AvailableMeals = () => {
     const [meals, setMeals] = useState([]);
@@ -12,7 +11,7 @@ const AvailableMeals = () => {
     useEffect(() => {
         const fetchMealsHttp = async () => {
             setIsLoading(true)
-            const response = await fetch('https://my-react-project-37b53-default-rtdb.europe-west1.firebasedatabase.app/meals.json');
+            const response = await fetch(`${process.env.REACT_APP_FIREBASE_TEST_DB}/meals.json`);
 
             if (!response.ok) {
                 throw new Error('Something went wrong!')
@@ -32,22 +31,7 @@ const AvailableMeals = () => {
             setMeals(loadedMeals);
         }
 
-        const fetchMealsLocal = async () => {
-            setIsLoading(true)
-            const loadedMeals = [];
-
-            for (const key in LocalMealsData.meals) {
-                loadedMeals.push({
-                    id: key,
-                    ...LocalMealsData.meals[key]
-                })
-            }
-
-            console.log(loadedMeals)
-            setMeals(loadedMeals);
-        }
-
-        fetchMealsLocal()
+        fetchMealsHttp()
             .catch(error => {
                 setHttpError(error.message)
             })

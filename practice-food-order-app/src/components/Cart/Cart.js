@@ -32,7 +32,7 @@ const Cart = props => {
 
     const submitOrderHandler = async (userData) => {
         setIsSubmitting(true)
-        const response = await fetch('https://my-react-project-37b53-default-rtdb.europe-west1.firebasedatabase.app/orders.json', {
+        const response = await fetch(`${process.env.REACT_APP_FIREBASE_TEST_DB}/orders.json`, {
             method: 'POST',
             body: JSON.stringify({
                 user: userData,
