@@ -12,11 +12,14 @@ const Cart = props => {
     const [didSubmit, setDidSubmit] = useState(false);
 
     const dispatch = useDispatch();
-    const cartItemsState = useSelector((state) => state.cart.items);
-    const totalAmountState = useSelector((state) => state.cart.totalAmount);
 
-    const totalAmountFixed = `$${totalAmountState.toFixed(2)}`;
-    const hasItems = cartItemsState.length > 0;
+    const cartState = useSelector((state) => state.cart);
+
+    // const cartItemsState = useSelector((state) => state.cart.items);
+    // const totalAmountState = useSelector((state) => state.cart.totalAmount);
+
+    const totalAmountFixed = `$${cartState.totalAmount.toFixed(2)}`;
+    const hasItems = cartState.items.length > 0;
 
     const cartItemRemoveHandler = id => {
         dispatch(cartActions.removeItem(id));
@@ -39,7 +42,7 @@ const Cart = props => {
             method: 'POST',
             body: JSON.stringify({
                 user: userData,
-                orderItems: cartItemsState
+                orderItems: cartState.items
             })
         });
 
@@ -50,7 +53,7 @@ const Cart = props => {
 
     const cartItems =
         <ul className={classes['cart-items']}> {
-            cartItemsState.map(item => <CartItem
+            cartState.items.map(item => <CartItem
                 key={item.id}
                 name={item.name}
                 amount={item.amount}

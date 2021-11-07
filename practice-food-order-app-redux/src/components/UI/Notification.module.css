@@ -1,0 +1,17 @@
+.notification {
+  width: 100%;
+  background-color: #1a8ed1;
+  display: flex;
+  justify-content: space-between;
+  margin-top:4rem;
+  align-items: center;
+  color: white;
+}
+
+.error {
+  background-color: #690000;
+}
+
+.success {
+  background-color: #1ad1b9;
+}
