@@ -1,5 +1,6 @@
 import {useState} from "react";
 import Header from './components/Layout/Header'
+import HeaderWithActionCreator from './components/Layout/HeaderWithActionCreator'
 import Meals from "./components/Meals/Meals";
 import Cart from "./components/Cart/Cart";
 
@@ -18,7 +19,10 @@ function App() {
         <>
             {cartIsShown && <Cart onHideCart={hideCartHandler}/>}
 
-            <Header onShowCart={showCartHandler}/>
+            {/*<Header onShowCart={showCartHandler}/>*/}
+
+            <HeaderWithActionCreator onShowCart={showCartHandler}/>
+
             <main>
                 <Meals/>
             </main>

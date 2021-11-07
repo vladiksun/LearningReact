@@ -3,55 +3,30 @@ import classes from "./Header.module.css";
 import HeaderCartButton from "./HeaderCartButton";
 import {useDispatch, useSelector} from "react-redux";
 import {useEffect} from "react";
-import {uiActions} from "../../store/ui-slice";
 import Notification from "../UI/Notification";
+import {sendCardDataThunk, fetchCartData} from '../../store/cart-actions';
 
 let isInitial = true;
 
-const Header = props => {
+const HeaderWithActionCreator = props => {
     const dispatch = useDispatch();
     const cartState = useSelector((state) => state.cart);
     const notificationState = useSelector(state => state.ui.notification)
 
     useEffect(() => {
-        const sendCartData = async () => {
-            dispatch(uiActions.showNotification({
-                status: 'pending',
-                title: 'Sending...',
-                message: 'Sending cart data'
-            }));
+        dispatch(fetchCartData());
+    }, []);
 
-            const response = await fetch(`${process.env.REACT_APP_FIREBASE_TEST_DB}/cart.json`, {
-                method: 'PUT',
-                body: JSON.stringify(cartState)
-            });
-
-            if (!response.ok) {
-                throw new Error('Sending cart data failed.')
-            }
-
-            dispatch(uiActions.showNotification({
-                status: 'success',
-                title: 'Success!',
-                message: 'Sent cart data successfully.'
-            }));
-        };
-
+    useEffect(() => {
         if (isInitial) {
             isInitial = false;
             return;
         }
 
-        sendCartData()
-            .catch(error => {
-                dispatch(uiActions.showNotification({
-                    status: 'error',
-                    title: 'Error!',
-                    message: 'Sending cart data failed.'
-                }));
-            });
-
-    }, [cartState])
+        if (cartState.changed) {
+            dispatch(sendCardDataThunk(cartState));
+        }
+    }, [cartState]);
 
     return (
         <>
@@ -72,4 +47,4 @@ const Header = props => {
     );
 }
 
-export default Header;
+export default HeaderWithActionCreator;
